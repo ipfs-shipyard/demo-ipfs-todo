@@ -1,5 +1,9 @@
 # IPFS ToDo App
 
+![](https://user-images.githubusercontent.com/5447088/38440844-a1e5b402-39da-11e8-9822-54ba81c22756.png)
+
+Demo: https://ipfs.io/ipfs/QmfFaH6dGibQ5JwEdsujeHBzsmHUsFRB5kU9P8nzPyzMv2/
+
 ## Install
 
 1. This app requires `window.ipfs`. Install the IPFS Companion web extension:
