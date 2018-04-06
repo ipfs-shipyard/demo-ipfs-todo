@@ -1,8 +1,4 @@
-# IPFS ID and Public Key example
-
-![](https://user-images.githubusercontent.com/5447088/38272321-cfc5ffd2-3780-11e8-93bd-51427c850271.png)
-
-Demo: https://ipfs.io/ipfs/zdj7Whr8X3zah99TSuyPjENaERcBW9C7B36EaCb1DEZ5pbbL9
+# IPFS ToDo App
 
 ## Install
 
