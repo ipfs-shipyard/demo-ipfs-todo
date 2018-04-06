@@ -1,0 +1,50 @@
+{
+  "name": "ipfs-todo",
+  "description": "A simple TODO app using IPFS's MFS.",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Henrique Dias <hacdias@gmail.com>",
+  "main": "dist/index.html",
+  "scripts": {
+    "start": "ecstatic dist",
+    "clean": "shx rm -rf dist",
+    "build": "run-s build:*",
+    "build:copy": "run-p build:copy:*",
+    "build:copy:html": "shx mkdir -p dist && shx cp src/index.html dist/index.html",
+    "build:copy:ipfs-css": "run-p build:copy:ipfs-css:*",
+    "build:copy:ipfs-css:css": "shx mkdir -p dist && shx cp node_modules/ipfs-css/ipfs.css dist",
+    "build:copy:ipfs-css:fonts": "shx mkdir -p dist/fonts && shx cp node_modules/ipfs-css/fonts/* dist/fonts",
+    "build:copy:tachyons": "shx mkdir -p dist && shx cp node_modules/tachyons/css/tachyons.css dist",
+    "build:js": "browserify -g uglifyify src/index.js -o dist/bundle.js",
+    "test": "standard"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ipfs",
+    "qr",
+    "example",
+    "demo"
+  ],
+  "dependencies": {
+    "choo": "^6.11.0-preview1",
+    "ipfs-css": "^0.3.0",
+    "tachyons": "^4.9.1",
+    "window.ipfs-is-required": "^1.0.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.1.1",
+    "ecstatic": "^3.2.0",
+    "npm-run-all": "^4.1.2",
+    "shx": "^0.2.2",
+    "standard": "^11.0.1",
+    "uglifyify": "^4.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hacdias/ipfs-todo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hacdias/ipfs-todo/issues"
+  },
+  "homepage": "https://github.com/hacdias/ipfs-todo#readme"
+}
