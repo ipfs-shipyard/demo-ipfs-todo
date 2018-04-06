@@ -2,7 +2,7 @@
 
 const ipfsRequired = require('window.ipfs-is-required')
 
-const FILE = '/todos.txt'
+const FILE = '/todos.json'
 
 function store (state, emitter) {
   state.todos = []
@@ -14,16 +14,24 @@ function store (state, emitter) {
 
     try {
       await window.ipfs.files.write(FILE, buf, {create: true, truncate: true})
-      emitter.emit('render')
     } catch (e) {
       state.error = e
     }
   }
 
   emitter.on('DOMContentLoaded', async () => {
-    if (!ipfsRequired()) return
+    // Checks if window.ipfs is available through window.ipfs-is-required
+    // which shows an information bar to download IPFS Companion if window.ipfs
+    // is undefined.
+    if (!ipfsRequired()) {
+      state.error = new Error('You do not have IPFS Companion installed.')
+      emitter.emit('render')
+      return
+    }
 
     try {
+      // Reads the file with the ToDos and if it doesn't exist
+      // just creates a new empty one.
       const buf = await window.ipfs.files.read(FILE)
       const str = buf.toString()
       state.todos = JSON.parse(str)
@@ -33,13 +41,17 @@ function store (state, emitter) {
     }
   })
 
+  // Adds the ToDo to the list and saves it.
   emitter.on('addTodo', (todo) => {
     state.todos.push(todo)
+    emitter.emit('render')
     writeTodos()
   })
 
+  // Removes the ToDo from the list and saves it.
   emitter.on('removeTodo', (index) => {
     state.todos.splice(index, 1)
+    emitter.emit('render')
     writeTodos()
   })
 }

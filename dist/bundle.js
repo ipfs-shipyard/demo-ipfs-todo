@@ -114,22 +114,40 @@ module.exports=extend;var hasOwnProperty=Object.prototype.hasOwnProperty;functio
 "use strict";const choo=require("choo"),store=require("./store"),page=require("./page"),app=choo();app.use(store),app.route("*",page),app.mount("#root");
 
 },{"./page":38,"./store":39,"choo":8}],38:[function(require,module,exports){
-"use strict";const html=require("choo/html");function page(t,e){return html`
-    <div>
-      <p>Error: ${t.error}</p>
-      <ul>
-        ${t.todos.map((t,o)=>html`
-          <li>${t} <button data-index=${o} onclick=${function(t){e("removeTodo",t.target.dataset.index)}}>x</button></li>
+"use strict";const html=require("choo/html");function page(e,t){return html`
+    <div class='center mw6'>
+      <header>
+        <h1 class='f1 mb4 mt5'>Your ToDos</h1>
+      </header>
+
+      ${e.error?html`
+          <div class='bg-red white pa2 mv3'>
+            <p class='ma0'>${e.error.message}</p>
+          </div>
+        `:null}
+
+      <input type="text"
+        onkeyup=${function(e){if(13===e.keyCode){const a=e.currentTarget.value;""!==a&&t("addTodo",e.currentTarget.value)}}}
+        placeholder='What do you need to do?'
+        class='input-reset ba b--black-20 pa2 mb2 db w-100' />
+
+      <ul class='list pa0 mv3'>
+        ${e.todos.map((e,a)=>html`
+          <li class='mv2 lh-copy'>
+            <button data-index=${a}
+              onclick=${function(e){t("removeTodo",e.target.dataset.index)}}
+              style='cursor: pointer'
+              class='dim v-mid f7 w1 pa0 h1 link mr2 br-100 outline-0 bg-gray white bn'>✔</button>
+            <span>${e}</span>
+          </li>
         `)}
       </ul>
-
-      <input type="text" onkeyup=${function(t){13===t.keyCode&&e("addTodo",t.currentTarget.value)}} />
     </div>
   `}module.exports=page;
 
 },{"choo/html":7}],39:[function(require,module,exports){
 (function (Buffer){
-"use strict";const ipfsRequired=require("window.ipfs-is-required"),FILE="/todos.txt";function store(o,e){o.todos=[],o.error=null;const t=async()=>{const t=JSON.stringify(o.todos),r=Buffer.from(t);try{await window.ipfs.files.write(FILE,r,{create:!0,truncate:!0}),e.emit("render")}catch(e){o.error=e}};e.on("DOMContentLoaded",async()=>{if(ipfsRequired())try{const r=(await window.ipfs.files.read(FILE)).toString();o.todos=JSON.parse(r),e.emit("render")}catch(o){t()}}),e.on("addTodo",e=>{o.todos.push(e),t()}),e.on("removeTodo",e=>{o.todos.splice(e,1),t()})}module.exports=store;
+"use strict";const ipfsRequired=require("window.ipfs-is-required"),FILE="/todos.json";function store(o,e){o.todos=[],o.error=null;const r=async()=>{const e=JSON.stringify(o.todos),r=Buffer.from(e);try{await window.ipfs.files.write(FILE,r,{create:!0,truncate:!0})}catch(e){o.error=e}};e.on("DOMContentLoaded",async()=>{if(!ipfsRequired())return o.error=new Error("You do not have IPFS Companion installed."),void e.emit("render");try{const t=(await window.ipfs.files.read(FILE)).toString();o.todos=JSON.parse(t),e.emit("render")}catch(o){r()}}),e.on("addTodo",t=>{o.todos.push(t),e.emit("render"),r()}),e.on("removeTodo",t=>{o.todos.splice(t,1),e.emit("render"),r()})}module.exports=store;
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":5,"window.ipfs-is-required":34}]},{},[37]);
