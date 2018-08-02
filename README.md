@@ -4,8 +4,6 @@
 
 Demo: https://ipfs.io/ipfs/QmfFaH6dGibQ5JwEdsujeHBzsmHUsFRB5kU9P8nzPyzMv2/
 
-Right now, this only supports using an external daemon with go-ipfs since js-ipfs doesn't yet support MFS (Mutable File System).
-
 ## Install
 
 1. This app requires `window.ipfs`. Install the IPFS Companion web extension:
