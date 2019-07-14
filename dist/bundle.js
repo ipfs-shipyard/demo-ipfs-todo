@@ -158,7 +158,7 @@ module.exports=extend;var hasOwnProperty=Object.prototype.hasOwnProperty;functio
 
 },{"choo/html":8}],42:[function(require,module,exports){
 (function (Buffer){
-"use strict";const ipfsRequired=require("window.ipfs-is-required"),FILE="/todos.json";function store(e,o){let r=null;e.todos=[],e.error=null;const t=async()=>{const o=JSON.stringify(e.todos),t=Buffer.from(o);try{await r.files.write(FILE,t,{create:!0,truncate:!0})}catch(o){e.error=o}};o.on("DOMContentLoaded",async()=>{if(!ipfsRequired())return e.error=new Error("You do not have IPFS Companion installed."),void o.emit("render");r=await window.ipfs.enable({commands:["files"]});try{const n=(await r.files.read(FILE)).toString();e.todos=JSON.parse(n),o.emit("render")}catch(e){t()}}),o.on("addTodo",r=>{e.todos.push(r),o.emit("render"),t()}),o.on("removeTodo",r=>{e.todos.splice(r,1),o.emit("render"),t()})}module.exports=store;
+"use strict";const ipfsRequired=require("window.ipfs-is-required"),FILE="/todos.json";function store(e,o){let r=null;e.todos=[],e.error=null;const t=async()=>{const o=JSON.stringify(e.todos),t=Buffer.from(o);try{await r.files.write(FILE,t,{create:!0,truncate:!0})}catch(o){e.error=o}};o.on("DOMContentLoaded",async()=>{if(!ipfsRequired())return e.error=new Error("You do not have IPFS Companion installed."),void o.emit("render");try{r=await window.ipfs.enable({commands:["files"]})}catch(o){e.error=o}try{const n=(await r.files.read(FILE)).toString();e.todos=JSON.parse(n),o.emit("render")}catch(e){t()}}),o.on("addTodo",r=>{e.todos.push(r),o.emit("render"),t()}),o.on("removeTodo",r=>{e.todos.splice(r,1),o.emit("render"),t()})}module.exports=store;
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":6,"window.ipfs-is-required":37}]},{},[40]);
