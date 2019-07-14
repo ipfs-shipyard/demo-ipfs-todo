@@ -9,13 +9,13 @@ function page (state, emit) {
         <h1 class='f1 mb4 mt5'>Your ToDos</h1>
       </header>
 
-      ${ state.error ?
-        html`
+      ${state.error
+    ? html`
           <div class='bg-red white pa2 mv3'>
             <p class='ma0'>${state.error.message}</p>
           </div>
         `
-      : null}
+    : null}
 
       <input type="text"
         onkeyup=${keyup}
@@ -39,8 +39,7 @@ function page (state, emit) {
   function keyup (event) {
     if (event.keyCode === 13) {
       const val = event.currentTarget.value
-      if (val !== '')
-        emit('addTodo', event.currentTarget.value)
+      if (val !== '') { emit('addTodo', event.currentTarget.value) }
     }
   }
 

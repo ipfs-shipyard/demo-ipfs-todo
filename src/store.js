@@ -5,6 +5,7 @@ const ipfsRequired = require('window.ipfs-is-required')
 const FILE = '/todos.json'
 
 function store (state, emitter) {
+  let ipfs = null
   state.todos = []
   state.error = null
 
@@ -13,7 +14,7 @@ function store (state, emitter) {
     const buf = Buffer.from(todos)
 
     try {
-      await window.ipfs.files.write(FILE, buf, {create: true, truncate: true})
+      await ipfs.files.write(FILE, buf, { create: true, truncate: true })
     } catch (e) {
       state.error = e
     }
@@ -30,9 +31,15 @@ function store (state, emitter) {
     }
 
     try {
+      ipfs = await window.ipfs.enable({ commands: ['files'] })
+    } catch (e) {
+      state.error = e
+    }
+
+    try {
       // Reads the file with the ToDos and if it doesn't exist
       // just creates a new empty one.
-      const buf = await window.ipfs.files.read(FILE)
+      const buf = await ipfs.files.read(FILE)
       const str = buf.toString()
       state.todos = JSON.parse(str)
       emitter.emit('render')
